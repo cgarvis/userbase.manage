@@ -6,9 +6,7 @@ angular.module('userbase')
       .then (app) ->
         angular.extend(userbase, app)
       .catch (err) ->
-        ApplicationDataStore.save({name: 'Userbase'})
-      .then (app) ->
-        angular.extend(userbase, app)
+        $log.error('Could not load Userbase App data', err)
 
     userbase
 
@@ -58,21 +56,6 @@ angular.module('userbase')
           deferred.resolve(user, new_app)
         .catch (err) ->
           deferred.reject(err)
-
-      deferred.promise
-
-  .factory 'loginUser', ($q, SessionDataStore, userbase) ->
-    (email, password) ->
-      deferred = $q.defer()
-
-      if email? and password?
-        SessionDataStore.get({email: email, password: password}, userbase)
-          .then (user) ->
-            deferred.resolve(user)
-          .catch (err) ->
-            deferred.reject(err)
-      else
-        deferred.reject('Email and password are required')
 
       deferred.promise
 

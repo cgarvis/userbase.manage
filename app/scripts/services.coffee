@@ -1,7 +1,9 @@
 angular.module('userbase')
   .factory 'store', ->
-    apps: []
-    users: []
+    apps: {}
+    next_app_id: 1
+    users: {}
+    next_user_id: 1
   .factory 'ApplicationDataStore', ($q, $log, store) ->
     get: (id) ->
       deferred = $q.defer()
@@ -13,9 +15,18 @@ angular.module('userbase')
 
       deferred.promise
 
+    list: (owner) ->
+      deferred = $q.defer()
+
+      apps = (app for id, app of store.apps when app.owner_id is owner.id)
+      deferred.resolve(apps)
+
+      deferred.promise
+
     save: (app, owner) ->
       unless app.id?
-        app.id = store.apps.length + 1
+        app.id = store.next_app_id
+        store.next_app_id++
       if owner?
         app.owner_id = owner.id
 
@@ -34,9 +45,18 @@ angular.module('userbase')
 
       deferred.promise
 
+    list: (app) ->
+      deferred = $q.defer()
+
+      users = (user for id, user of store.users when user.app_id is app.id)
+      deferred.resolve(users)
+
+      deferred.promise
+
     save: (user, app) ->
       unless user.id?
-        user.id = store.users.length + 1
+        user.id = store.next_user_id
+        store.next_user_id++
       if app?
         user.app_id = app.id
       store.users[user.id] = user

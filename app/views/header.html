@@ -1,0 +1,17 @@
+<div class="navbar navbar-static-top">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#">Userbase</a>
+  </div>
+
+  <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown" ng-class="{open: open}">
+      <a href class="dropdown-toggle" ng-click="toggle()">{{app.name}} <b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li ng-repeat="app in apps">
+          <a href ng-click="select($index)">{{app.name}}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
