@@ -1,0 +1,16 @@
+<form class="form-register" ng-submit="register()">
+  <h1>Create your Userbase account.</h1>
+  <input type="text" class="form-control" placeholder="Email address" required autofocus ng-model="user.email">
+  <input type="password" class="form-control" placeholder="Password" required ng-model="user.password">
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Create your Userbase account</button>
+</form>
+
+<p>
+  Already have an account?
+  <a href="#/login">Sign in.</a>
+<p>
+
+<ul>
+  <li><a href="#/reset">Forgot your password?</a></li>
+  <li><a href="#/">Userbase</a></li>
+</ul>
