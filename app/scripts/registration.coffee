@@ -26,21 +26,6 @@ angular.module('userbase')
 
       deferred.promise
 
-  .factory 'createProject', ($q, ProjectDataStore) ->
-    (name, owner) ->
-      deferred = $q.defer()
-
-      if name?
-        new_project = {name: name}
-        ProjectDataStore.save(new_project, owner)
-          .then (project) ->
-            deferred.resolve(project)
-          .catch (err) ->
-      else
-        deferred.reject('Name is required')
-
-      deferred.promise
-
   .factory 'registerUser', ($q, userbase, createUser, createProject) ->
     (email, password) ->
       deferred = $q.defer()

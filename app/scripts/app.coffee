@@ -1,6 +1,7 @@
 'use strict'
 
 angular.module('userbase', [
+  'ngCookies'
   'ngRoute'
   'modal'
 ])
@@ -19,8 +20,6 @@ angular.module('userbase', [
       .when '/register',
         templateUrl: 'views/register.html'
         controller: 'RegisterCtrl'
-      .otherwise
-        redirectTo: '/login'
 
   .run ($window, ProjectDataStore, UserDataStore) ->
     $window.project_store = ProjectDataStore
@@ -43,3 +42,8 @@ angular.module('userbase', [
           .then (hitched_project) ->
             UserDataStore.save({email: 'joe@hitched.io', password: 'password'}, hitched_project)
             UserDataStore.save({email: 'sue@hitched.io', password: 'password'}, hitched_project)
+
+  .run ($rootScope, $location, Auth) ->
+    $rootScope.$on '$routeChangeStart', (event, next, current) ->
+      unless Auth.isLoggedIn() then $location.path('/login')
+

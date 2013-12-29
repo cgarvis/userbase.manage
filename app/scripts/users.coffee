@@ -1,12 +1,4 @@
 angular.module('userbase')
-  .factory 'getProject', (ProjectDataStore) ->
-    (id) ->
-      ProjectDataStore.get(id)
-
-  .factory 'fetchProjects', (ProjectDataStore) ->
-    (owner) ->
-      ProjectDataStore.list(owner)
-
   .factory 'createUser', (UserDataStore) ->
     (email, password, project) ->
       UserDataStore.save({email: email, password: password}, project)

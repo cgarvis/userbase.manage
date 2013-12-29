@@ -71,7 +71,7 @@ angular.module('userbase')
         if user.email is email
           found = true
           if user.password is password
-            session = {id: user.id, email: user.email}
+            session = {id: user.id, email: user.email, token: 'someToken'}
             $log.debug('User logged in', session)
             deferred.resolve(session)
           else
