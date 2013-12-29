@@ -3,16 +3,19 @@ angular.module('userbase')
     restrict: 'E'
     replace: true
     templateUrl: 'views/header.html'
-    controller: ($scope, $location, $log, fetchApplications) ->
-      fetchApplications({id: 2})
-        .then (apps) ->
-          $scope.apps = apps
+    controller: ($scope, $location, $log, fetchProjects) ->
+      fetchProjects({id: 2})
+        .then (projects) ->
+          $scope.projects = projects
         .catch (err) ->
-          $log.warn('Fetch Applications:', err)
+          $log.warn('Fetch Projects:', err)
 
-      $scope.select = (index) ->
-        app = $scope.apps[index]
-        $location.path("/#{app.id}/users")
+      $scope.selectProject = (index) ->
+        project = $scope.projects[index]
+        $location.path("/#{project.id}/users")
+
+      $scope.newProject = ->
+        $location.path("/new-project")
 
   .directive 'dropdownToggle', ($document, $location) ->
     openElement = null

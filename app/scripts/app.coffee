@@ -2,6 +2,7 @@
 
 angular.module('userbase', [
   'ngRoute'
+  'modal'
 ])
   # @TODO: implement once grunt handles pustate
   #.config ($locationProvider) ->
@@ -9,7 +10,7 @@ angular.module('userbase', [
 
   .config ($routeProvider) ->
     $routeProvider
-      .when '/:appId/users',
+      .when '/:projectId/users',
         templateUrl: 'views/dashboard.html'
         controller: 'UsersCtrl'
       .when '/login',
@@ -21,21 +22,24 @@ angular.module('userbase', [
       .otherwise
         redirectTo: '/login'
 
-  .run (ApplicationDataStore, UserDataStore) ->
+  .run ($window, ProjectDataStore, UserDataStore) ->
+    $window.project_store = ProjectDataStore
+    $window.user_store = UserDataStore
+
     userbase = null
-    ApplicationDataStore.save({name: 'Userbase'})
-      .then (app) ->
-        userbase = app
+    ProjectDataStore.save({name: 'Userbase'})
+      .then (project) ->
+        userbase = project
         UserDataStore.save({email: 'joe@userbase.io', password: 'password'}, userbase)
           .then (user) ->
-            ApplicationDataStore.save({name: 'Legal'}, user)
-          .then (legal_app) ->
-            UserDataStore.save({email: 'joe@legal.io', password: 'password'},legal_app)
-            UserDataStore.save({email: 'sue@legal.io', password: 'password'},legal_app)
+            ProjectDataStore.save({name: 'Legal'}, user)
+          .then (legal_project) ->
+            UserDataStore.save({email: 'joe@legal.io', password: 'password'},legal_project)
+            UserDataStore.save({email: 'sue@legal.io', password: 'password'},legal_project)
         UserDataStore.save({email: 'cgarvis@gmail.com', password: 'hitachi'}, userbase)
           .then (user) ->
-            ApplicationDataStore.save(userbase, user)
-            ApplicationDataStore.save({name: 'Simply Hitched'}, user)
-          .then (hitched_app) ->
-            UserDataStore.save({email: 'joe@hitched.io', password: 'password'}, hitched_app)
-            UserDataStore.save({email: 'sue@hitched.io', password: 'password'}, hitched_app)
+            ProjectDataStore.save(userbase, user)
+            ProjectDataStore.save({name: 'Simply Hitched'}, user)
+          .then (hitched_project) ->
+            UserDataStore.save({email: 'joe@hitched.io', password: 'password'}, hitched_project)
+            UserDataStore.save({email: 'sue@hitched.io', password: 'password'}, hitched_project)

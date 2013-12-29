@@ -1,22 +1,22 @@
 angular.module('userbase')
-  .factory 'userbase', ($log, ApplicationDataStore) ->
+  .factory 'userbase', ($log, ProjectDataStore) ->
     userbase = {}
 
-    ApplicationDataStore.get(1)
-      .then (app) ->
-        angular.extend(userbase, app)
+    ProjectDataStore.get(1)
+      .then (project) ->
+        angular.extend(userbase, project)
       .catch (err) ->
-        $log.error('Could not load Userbase App data', err)
+        $log.error('Could not load Userbase Project data', err)
 
     userbase
 
   .factory 'createUser', ($q, UserDataStore) ->
-    (email, password, application) ->
+    (email, password, project) ->
       deferred = $q.defer()
 
       if email? and password?
         new_user = {email: email, password: password}
-        UserDataStore.save(new_user, application)
+        UserDataStore.save(new_user, project)
           .then (user) ->
             deferred.resolve(user)
           .catch (err) ->
@@ -26,22 +26,22 @@ angular.module('userbase')
 
       deferred.promise
 
-  .factory 'createApplication', ($q, ApplicationDataStore) ->
+  .factory 'createProject', ($q, ProjectDataStore) ->
     (name, owner) ->
       deferred = $q.defer()
 
       if name?
-        new_app = {name: name}
-        ApplicationDataStore.save(new_app, owner)
-          .then (app) ->
-            deferred.resolve(app)
+        new_project = {name: name}
+        ProjectDataStore.save(new_project, owner)
+          .then (project) ->
+            deferred.resolve(project)
           .catch (err) ->
       else
         deferred.reject('Name is required')
 
       deferred.promise
 
-  .factory 'registerUser', ($q, userbase, createUser, createApplication) ->
+  .factory 'registerUser', ($q, userbase, createUser, createProject) ->
     (email, password) ->
       deferred = $q.defer()
 
@@ -51,9 +51,9 @@ angular.module('userbase')
       createUser(email, password, userbase)
         .then (new_user) ->
           user = new_user
-          createApplication('New Project', user)
-        .then (new_app) ->
-          deferred.resolve(user, new_app)
+          createProject('New Project', user)
+        .then (new_project) ->
+          deferred.resolve(user, new_project)
         .catch (err) ->
           deferred.reject(err)
 
@@ -62,7 +62,7 @@ angular.module('userbase')
   .controller 'RegisterCtrl', ($scope, $location, $log, registerUser, loginUser) ->
     $scope.register = ->
       registerUser($scope.user.email, $scope.user.password)
-        .then (user, app) ->
+        .then (user, project) ->
           $log.debug('Registered user')
           loginUser($scope.user.email, $scope.user.password)
         .then ->

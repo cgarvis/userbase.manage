@@ -5,10 +5,13 @@
 
   <ul class="nav navbar-nav navbar-right">
     <li class="dropdown" ng-class="{open: open}">
-      <a href class="dropdown-toggle" ng-click="toggle()">{{app.name}} <b class="caret"></b></a>
+      <a href class="dropdown-toggle" ng-click="toggle()">{{project.name}} <b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li ng-repeat="app in apps">
-          <a href ng-click="select($index)">{{app.name}}</a>
+        <li ng-repeat="project in projects">
+          <a href ng-click="selectProject($index)">{{project.name}}</a>
+        </li>
+        <li>
+          <a href ng-click="newProject()">New Project</a>
         </li>
       </ul>
     </li>

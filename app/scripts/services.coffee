@@ -1,15 +1,15 @@
 angular.module('userbase')
   .factory 'store', ->
-    apps: {}
-    next_app_id: 1
+    projects: {}
+    next_project_id: 1
     users: {}
     next_user_id: 1
-  .factory 'ApplicationDataStore', ($q, $log, store) ->
+  .factory 'ProjectDataStore', ($q, $log, store) ->
     get: (id) ->
       deferred = $q.defer()
 
-      if store.apps[id]?
-        deferred.resolve(store.apps[id])
+      if store.projects[id]?
+        deferred.resolve(store.projects[id])
       else
         deferred.reject('Not found')
 
@@ -18,21 +18,21 @@ angular.module('userbase')
     list: (owner) ->
       deferred = $q.defer()
 
-      apps = (app for id, app of store.apps when app.owner_id is owner.id)
-      deferred.resolve(apps)
+      projects = (project for id, project of store.projects when project.owner_id is owner.id)
+      deferred.resolve(projects)
 
       deferred.promise
 
-    save: (app, owner) ->
-      unless app.id?
-        app.id = store.next_app_id
-        store.next_app_id++
+    save: (project, owner) ->
+      unless project.id?
+        project.id = store.next_project_id
+        store.next_project_id++
       if owner?
-        app.owner_id = owner.id
+        project.owner_id = owner.id
 
-      store.apps[app.id] = app
-      $log.debug('Application created', app)
-      $q.when(app)
+      store.projects[project.id] = project
+      $log.debug('Project created', project)
+      $q.when(project)
 
   .factory 'UserDataStore', ($q, $log, store) ->
     get: (id) ->
@@ -45,20 +45,20 @@ angular.module('userbase')
 
       deferred.promise
 
-    list: (app) ->
+    list: (project) ->
       deferred = $q.defer()
 
-      users = (user for id, user of store.users when user.app_id is app.id)
+      users = (user for id, user of store.users when user.project_id is project.id)
       deferred.resolve(users)
 
       deferred.promise
 
-    save: (user, app) ->
+    save: (user, project) ->
       unless user.id?
         user.id = store.next_user_id
         store.next_user_id++
-      if app?
-        user.app_id = app.id
+      if project?
+        user.project_id = project.id
       store.users[user.id] = user
       $log.debug('User created', user)
       $q.when(user)
