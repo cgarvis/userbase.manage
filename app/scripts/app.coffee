@@ -3,6 +3,7 @@
 angular.module('userbase', [
   'ngCookies'
   'ngRoute'
+  'alerts'
   'modal'
 ])
   # @TODO: implement once grunt handles pustate
@@ -20,7 +21,17 @@ angular.module('userbase', [
       .when '/register',
         templateUrl: 'views/register.html'
         controller: 'RegisterCtrl'
+      .when '/:projectId/settings',
+        templateUrl: 'views/settings.html'
+        controller: 'SettingsCtrl'
+      .when '/',
+        templateUrl: 'views/dashboard.html'
+        controller: 'UsersCtrl'
+      .when '/404',
+        templateUrl: 'views/404.html'
+      .otherwise redirectTo: '/404'
 
+  # Load fake data for development
   .run ($window, ProjectDataStore, UserDataStore) ->
     $window.project_store = ProjectDataStore
     $window.user_store = UserDataStore
@@ -43,7 +54,18 @@ angular.module('userbase', [
             UserDataStore.save({email: 'joe@hitched.io', password: 'password'}, hitched_project)
             UserDataStore.save({email: 'sue@hitched.io', password: 'password'}, hitched_project)
 
-  .run ($rootScope, $location, Auth) ->
+  .run ($rootScope, $location, $log, Auth) ->
     $rootScope.$on '$routeChangeStart', (event, next, current) ->
-      unless Auth.isLoggedIn() then $location.path('/login')
+      unless Auth.isLoggedIn()
+        $location.path('/login')
 
+  .directive 'body', ($location) ->
+    restrict: 'E'
+    link: (scope, element, attrs) ->
+      scope.$on '$routeChangeStart', (event, next, current) ->
+        element.removeClass name for name in ['sessions', 'app']
+
+        if $location.path() in ['/login', '/register', '/404']
+          element.addClass('sessions')
+        else
+          element.addClass('app')

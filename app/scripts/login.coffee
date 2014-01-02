@@ -1,7 +1,6 @@
 angular.module('userbase')
   .factory 'Auth', ($cookieStore, $q, $log, SessionDataStore, userbase) ->
     currentUser = $cookieStore.get('user')
-    console.log(currentUser)
 
     isLoggedIn: ->
       if @user? and @user.token?
@@ -14,7 +13,7 @@ angular.module('userbase')
 
       if email? and password?
         SessionDataStore.get({email: email, password: password}, userbase)
-          .then (user) ->
+          .then (user) =>
             $cookieStore.put('user', user)
             angular.extend(@user, user)
             deferred.resolve(user)

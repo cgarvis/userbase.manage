@@ -1,16 +1,30 @@
-<form class="form-register" ng-submit="register()">
-  <h1>Create your Userbase account.</h1>
-  <input type="text" class="form-control" placeholder="Email address" required autofocus ng-model="user.email">
-  <input type="password" class="form-control" placeholder="Password" required ng-model="user.password">
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Create your Userbase account</button>
-</form>
+<div class="row">
+  <div class="col-md-4 col-md-push-4">
+    <div class="account-form">
+      <h1>Sign Up<br><small>Start managing users in minutes</small></h1>
 
-<p>
-  Already have an account?
-  <a href="#/login">Sign in.</a>
-<p>
+      <form role="form" ng-submit="register()">
+        <div class="form-group">
+          <label for="user_email">Your Email</label>
+          <input type="text" id="user_email" class="form-control" placeholder="Email" required autofocus ng-model="user.email">
+        </div>
 
-<ul>
-  <li><a href="#/reset">Forgot your password?</a></li>
-  <li><a href="#/">Userbase</a></li>
-</ul>
+        <div class="form-group">
+          <label for="user_password">Choose a Password</label>
+          <input type="password" id="user_password" class="form-control" placeholder="Password" required ng-model="user.password">
+        </div>
+
+        <hr>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Create your Userbase account</button>
+      </form>
+    </div>
+
+    <div class="account-extras">
+      <p>
+        Already have an account?
+        <a href="#/login">Sign in.</a>
+      <p>
+    </div>
+  </div>
+</div>

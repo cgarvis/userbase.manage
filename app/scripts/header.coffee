@@ -3,23 +3,33 @@ angular.module('userbase')
     restrict: 'E'
     replace: true
     templateUrl: 'views/header.html'
-    controller: ($scope, $location, Auth, fetchProjects) ->
-      updateProjects = ->
+    controller: ($scope, $route, $location, Auth, fetchProjects) ->
+      refreshProjects = ->
         fetchProjects({id: Auth.user.id})
           .then (projects) ->
             $scope.projects = projects
+          .then ->
+            selectProject()
           .catch (err) ->
             $log.warn('Fetch Projects:', err)
 
-      $scope.selectProject = (index) ->
-        project = $scope.projects[index]
-        $location.path("/#{project.id}/users")
+      selectProject = ->
+        for project in $scope.projects
+          if $route.current.params.projectId is project.id.toString()
+            $scope.currentProject = project
+            break
+
+      $scope.currentUser = Auth.user
+
+      $scope.switchProject = (index) ->
+        $scope.currentProject = $scope.projects[index]
+        $location.path("/#{$scope.currentProject.id}/users")
 
       # Update project list when one is added
-      $scope.$on 'project:created', -> updateProjects()
+      $scope.$on 'project:created', -> refreshProjects()
 
       # Initial load of projects for current user
-      updateProjects()
+      refreshProjects()
 
   .directive 'dropdownToggle', ($document, $location) ->
     openElement = null

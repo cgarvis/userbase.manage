@@ -8,19 +8,21 @@ angular.module('userbase')
       UserDataStore.list(project)
 
   .controller 'UsersCtrl', ($scope, $routeParams, $log, getProject, fetchUsers) ->
-    updateUsers = (project) ->
+    refreshUsers = (project) ->
       fetchUsers(project)
         .then (users) ->
           $scope.users = users
         .catch (err) ->
           $log.debug('Failed to load project data', err)
 
-    promse = getProject($routeParams.projectId)
+    # Initial load projects and the users
+    getProject($routeParams.projectId)
       .then (project) ->
         $scope.project = project
 
-        $scope.$on('user:created', -> updateUsers($scope.project))
-        updateUsers(project)
+        # Refresh list when user is created
+        $scope.$on('user:created', -> refreshUsers($scope.project))
+        refreshUsers(project)
 
   .controller 'CreateUserCtrl', ($scope, $routeParams, $log, getProject, createUser) ->
     $scope.user = {}

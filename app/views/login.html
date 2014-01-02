@@ -1,16 +1,31 @@
-<form class="form-login" ng-submit="login()">
-  <h1>Welcome Back!</h1>
-  <input type="text" class="form-control" placeholder="Email address" required autofocus ng-model="user.email">
-  <input type="password" class="form-control" placeholder="Password" required ng-model="user.password">
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in to your account</button>
-</form>
+<div class="row">
+  <div class="col-md-4 col-md-push-4">
+    <div class="account-form">
+      <h1>Welcome Back!</h1>
 
-<p>
-  Don't have an account?
-  <a href="#/register">Sign up</a>
-<p>
+      <form role="form" ng-submit="login()">
+        <div class="form-group">
+          <label for="user_email">Email</label>
+          <input type="text" id="user_email" class="form-control" placeholder="Email" required autofocus ng-model="user.email">
+        </div>
 
-<ul>
-  <li><a href="#/reset">Forgot your password?</a></li>
-  <li><a href="#/">Userbase</a></li>
-</ul>
+        <div class="form-group">
+          <label for="user_password">Password</label>
+          <input type="password" id="user_password" class="form-control" placeholder="Password" required ng-model="user.password">
+        </div>
+
+        <hr>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in to your account</button>
+      </form>
+    </div>
+
+    <div class="account-extras">
+      <p>
+        <a href="#/reset">Forgot your password?</a>
+        · Don't have an account?
+        <a href="#/register">Sign up</a>
+      <p>
+    </div>
+  </div>
+</div>

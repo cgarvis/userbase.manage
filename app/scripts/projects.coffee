@@ -23,6 +23,10 @@ angular.module('userbase')
     (owner) ->
       ProjectDataStore.list(owner)
 
+  .factory 'saveProject', ($q, ProjectDataStore) ->
+    (project) ->
+      ProjectDataStore.save(project)
+
   .controller 'CreateProjectCtrl', ($scope, $log, createProject, Auth) ->
     $scope.project = {}
 

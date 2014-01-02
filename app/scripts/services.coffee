@@ -4,6 +4,7 @@ angular.module('userbase')
     next_project_id: 1
     users: {}
     next_user_id: 1
+
   .factory 'ProjectDataStore', ($q, $log, store) ->
     get: (id) ->
       deferred = $q.defer()
@@ -25,8 +26,15 @@ angular.module('userbase')
 
     save: (project, owner) ->
       unless project.id?
+        # set id
         project.id = store.next_project_id
         store.next_project_id++
+
+        # generate random token
+        possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        project.token = ''
+        project.token += possible.charAt(Math.floor(Math.random() * possible.length)) for i in [1..6]
+
       if owner?
         project.owner_id = owner.id
 
